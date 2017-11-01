@@ -23,7 +23,6 @@ export default class LoginScreen extends Component{
       try {
           await firebase.auth()
           .signInWithEmailAndPassword(this.state.email, this.state.password)
-          console.log("Logged In!");
           this.props
                .navigation
                .dispatch(NavigationActions.reset(
@@ -34,9 +33,7 @@ export default class LoginScreen extends Component{
                     ]
                   }));
       } catch (error) {
-        console.log("Not logged In");
-        console.log("In catch");
-          console.log(error.toString())
+				throw error;
       }
 
   }
@@ -55,6 +52,7 @@ export default class LoginScreen extends Component{
               <Item floatingLabel>
                 <Label>Email</Label>
                 <Input onChangeText={(text)=> this.setState({email: text})}
+									keyboardType='email-address'
                   autoCorrect={false}
                   autoCapitalize="none"/>
               </Item>
@@ -68,7 +66,7 @@ export default class LoginScreen extends Component{
             </Form>
             <Grid style={{ paddingTop: 30, paddingLeft: 90 }}>
               <Button light onPress={this.login.bind(this)}>
-                <Text>Light</Text>
+                <Text>Login</Text>
               </Button>
             </Grid>
             <Grid style={{ paddingTop: 30, paddingLeft: 60 }}>

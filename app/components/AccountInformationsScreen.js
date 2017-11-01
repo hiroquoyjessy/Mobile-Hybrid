@@ -3,7 +3,7 @@ import {
 	AppRegistry,
 	View
 } from 'react-native';
-import { Container, Header, Content, Form, Grid, Item, Input, Label, Button, Text } from 'native-base';
+import { Container, Header, Content, Form, Grid, Item, Input, Label, Button, Text, H1 } from 'native-base';
 import {
 	NavigationActions
 } from 'react-navigation';
@@ -18,28 +18,33 @@ export default class AccountInformationsScreen extends Component {
 	async signout() {
 		try {
 				await firebase.auth().signOut()
-				console.log('Signed out');
-				this.props
-               .navigation
-               .dispatch(NavigationActions.reset(
-                 {
-                    index: 0,
-                    actions: [
-                      NavigationActions.navigate({ routeName: 'Login'})
-                    ]
-                  }));
+				alert('Signed out');
+				this.props.navigation.dispatch(
+									{
+											type: 'Navigation/NAVIGATE',
+											routeName: 'Login',
+									}
+								 );
 		} catch (e) {
-			console.log("Not signed out");
-			console.log("In catch");
-			console.log(e.toString())
+			throw e;
 		}
 	}
 
   render(){
     return(
-			<Button light onPress={this.signout.bind(this)}>
-				<Text>Logout</Text>
-			</Button>
+			<Container>
+        <Content>
+          <H1 style={{ textAlign: 'center' }}>
+					{`Hi ${firebase.auth().currentUser.email}, yes I only know your email address is that a problem ? :) `}</H1>
+					<Button
+						danger
+						block
+						onPress={this.signout.bind(this)}
+					>
+						<Text>Logout</Text>
+					</Button>
+        </Content>
+      </Container>
     )
   }
 }

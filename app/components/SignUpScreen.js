@@ -9,6 +9,7 @@ export default class SignUpScreen extends Component{
   constructor(props) {
     super(props);
     state = {
+      name: '',
       email: '',
       password: '',
       confirmPassword: ''
@@ -18,9 +19,12 @@ export default class SignUpScreen extends Component{
   async signup() {
     try {
       if (this.state.password === this.state.confirmPassword) {
-        await firebase.auth()
+        const user = await firebase.auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password);
-        console.log("Account created");
+            firebase.database().ref(`Users/${user.uid}`).set({
+              name: this.state.name,
+              email: this.state.email,
+            });
         this.props
              .navigation
              .dispatch(NavigationActions.reset(
@@ -32,10 +36,10 @@ export default class SignUpScreen extends Component{
                 }));
       }
       else {
-        console.log("confirmPassword is different");
+        alert("confirmPassword is different");
       }
     } catch (error) {
-        console.log(error.toString())
+        throw error;
     }
 
 }
@@ -50,12 +54,19 @@ this.props.navigation.dispatch(backAction)
     return(
         <Container>
           <Header />
-          <Content style={{ paddingTop: 100, paddingBottom: 50,
+          <Content style={{ paddingTop: 30, paddingBottom: 50,
               paddingRight: 50, paddingLeft: 50 }}>
             <Form>
               <Item floatingLabel>
+                <Label>name</Label>
+                <Input onChangeText={(text)=> this.setState({name: text})}
+                  autoCorrect={false}
+                  autoCapitalize="none"/>
+              </Item>
+              <Item floatingLabel>
                 <Label>Email</Label>
                 <Input onChangeText={(text)=> this.setState({email: text})}
+                  keyboardType='email-address'
                   autoCorrect={false}
                   autoCapitalize="none"/>
               </Item>
@@ -76,7 +87,7 @@ this.props.navigation.dispatch(backAction)
             </Form>
             <Grid style={{ paddingTop: 30, paddingLeft: 90 }}>
               <Button light onPress={this.signup.bind(this)}>
-                <Text>Light</Text>
+                <Text>SignUp</Text>
               </Button>
             </Grid>
             <Grid style={{ paddingTop: 30, paddingLeft: 40 }}>

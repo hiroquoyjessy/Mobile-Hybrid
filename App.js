@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as firebase from 'firebase';
-import { Icon } from 'react-native-elements'
+import { Icon, Button } from 'react-native-elements'
 import {
 	StackNavigator,
 	TabNavigator
@@ -9,29 +9,22 @@ import {
 	AppRegistry,
 } from 'react-native';
 
-//import AccountScreen from './app/components/AccountScreen/AccountScreen';
+import PhotoScreen from './app/components/PhotoScreen';
+import AddProductScreen from './app/components/AddProductScreen';
 import CartScreen from './app/components/CartScreen';
 import ShopScreen from './app/components/ShopScreen';
 import AccountInformationsScreen from './app/components/AccountInformationsScreen';
-import AccountOrdersScreen from './app/components/AccountOrdersScreen';
-import AuthenticationScreen from './app/components/AuthenticationScreen'
 import LoginScreen from './app/components/LoginScreen';
 import SignUpScreen from './app/components/SignUpScreen';
 
-
 // Account Page
 
-const AccountScreen = TabNavigator({
+const AccountScreenNavigator = StackNavigator({
   Informations: {
     screen: AccountInformationsScreen,
     navigationOptions: ({ navigation }) => ({
+				title: 'Account',
         tabBarLabel: 'My Informations'
-			})
-  },
-  Orders: {
-    screen: AccountOrdersScreen,
-    navigationOptions: ({ navigation }) => ({
-        tabBarLabel: 'My Orders'
 			})
   },
 }, {
@@ -40,13 +33,34 @@ const AccountScreen = TabNavigator({
   swipeEnabled: true
 });
 
+const ShopScreenNavigator = StackNavigator({
+	Shop: {
+    screen: ShopScreen,
+		navigationOptions: ({ navigation }) => ({
+			title: 'Shop',
+		})
+	},
+	AddProduct: {
+		screen: AddProductScreen,
+		navigationOptions: ({ navigation }) => ({
+			title: 'Add a product',
+		})
+	},
+	Photo: {
+		screen: PhotoScreen,
+		navigationOptions: ({ navigation }) => ({
+			title: 'Photo screen',
+		})
+	}
+})
+
 // Main Page
 
 const MainScreenNavigator = TabNavigator({
   Shop: {
-    screen: ShopScreen,
+    screen: ShopScreenNavigator,
     navigationOptions: ({ navigation }) => ({
-				title: 'Shop',
+				header: null,
         tabBarLabel: 'Shop',
         tabBarIcon: ({tintColor}) => <Icon name='shop' type='entypo' size={25} color={tintColor}/>
 			})
@@ -60,9 +74,9 @@ const MainScreenNavigator = TabNavigator({
 			})
   },
   Account: {
-    screen: AccountScreen,
+    screen: AccountScreenNavigator,
     navigationOptions: ({ navigation }) => ({
-				title: 'Account',
+				header: null,
         tabBarLabel: 'Account',
         tabBarIcon: ({tintColor}) => <Icon name='account-circle' type='material-community' size={25} color={tintColor}/>
 			})
@@ -91,19 +105,11 @@ const AuthStack = StackNavigator({
 	},
 	Main: {
     screen: MainScreenNavigator,
+		header: null,
   }
 });
 
-// const Authentication = StackNavigator({
-// 	Login: {
-// 		screen: AuthStack,
-// 	},
-// 	SignUp: {
-// 		screen: AuthStack,
-// 	}
-// });
-// Initialize Firebase
-  var config = {
+  const config = {
     apiKey: "AIzaSyAyfryUv0UaDyvDa1wv8H2m_4K9TpOMX2I",
     authDomain: "mobileuf-6a34b.firebaseapp.com",
     databaseURL: "https://mobileuf-6a34b.firebaseio.com",
