@@ -30,6 +30,7 @@ export default class SignUpScreen extends Component{
              .dispatch(NavigationActions.reset(
                {
                   index: 0,
+                  key: null,
                   actions: [
                     NavigationActions.navigate({ routeName: 'Main'})
                   ]

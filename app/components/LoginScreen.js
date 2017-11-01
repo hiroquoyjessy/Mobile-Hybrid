@@ -28,6 +28,7 @@ export default class LoginScreen extends Component{
                .dispatch(NavigationActions.reset(
                  {
                     index: 0,
+										key: null,
                     actions: [
                       NavigationActions.navigate({ routeName: 'Main'})
                     ]
